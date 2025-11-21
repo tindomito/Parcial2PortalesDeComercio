@@ -37,6 +37,11 @@
                         </li>
                         @auth
                             <li class="nav-item">
+                                <x-nav-link route="admin.users">
+                                    Panel de Admin
+                                </x-nav-link>
+                            </li>
+                            <li class="nav-item">
                                 <form action="{{ url('/cerrar-sesion') }}" method="POST">
                                     @csrf
                                     <button type="submit" class="nav-link">

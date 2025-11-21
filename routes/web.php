@@ -67,3 +67,8 @@ Route::post('registrarse', [\App\Http\Controllers\AuthController::class, 'store'
 Route::post('cerrar-sesion', [\App\Http\Controllers\AuthController::class, 'logout'])
     ->name('auth.logout');
 
+// Panel de Administración
+Route::get('admin/usuarios', [\App\Http\Controllers\AdminController::class, 'users'])
+    ->name('admin.users')
+    ->middleware('auth');
+
