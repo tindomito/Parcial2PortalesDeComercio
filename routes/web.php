@@ -12,6 +12,9 @@ Route::get('/', [\App\Http\Controllers\HomeController::class, 'home'])
 Route::get('/quienes-somos',[\App\Http\Controllers\AboutController::class, 'about'])
     ->name('about');
 
+Route::get('/novedades', [\App\Http\Controllers\NewsController::class, 'index'])
+    ->name('news.index');
+
 Route::get('peliculas/listado', [\App\Http\Controllers\MoviesController::class, 'index'])
     ->name('movies.index');
 

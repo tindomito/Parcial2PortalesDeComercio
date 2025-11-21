@@ -31,6 +31,11 @@
                             </x-nav-link>
                         </li>
                         <li class="nav-item">
+                            <x-nav-link route="news.index">
+                                Novedades
+                            </x-nav-link>
+                        </li>
+                        <li class="nav-item">
                             <x-nav-link route="movies.index">
                                 Películas
                             </x-nav-link>
