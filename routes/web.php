@@ -58,6 +58,12 @@ Route::get('iniciar-sesion', [\App\Http\Controllers\AuthController::class, 'logi
 Route::post('iniciar-sesion', [\App\Http\Controllers\AuthController::class, 'authenticate'])
     ->name('auth.authenticate');
 
+Route::get('registrarse', [\App\Http\Controllers\AuthController::class, 'register'])
+    ->name('auth.register');
+
+Route::post('registrarse', [\App\Http\Controllers\AuthController::class, 'store'])
+    ->name('auth.register.store');
+
 Route::post('cerrar-sesion', [\App\Http\Controllers\AuthController::class, 'logout'])
     ->name('auth.logout');
 

@@ -14,7 +14,11 @@
             <label for="password" class="form-label">Contraseña</label>
             <input type="password" name="password" id="password" class="form-control">
         </div>
-        <input type="submit" value="Ingresar" class="btn btn-primary">
+        <button type="submit" class="btn btn-primary">Ingresar</button>
+
+        <p class="mt-3">
+            ¿No tienes una cuenta? <a href="{{ route('auth.register') }}">Regístrate aquí</a>
+        </p>
     </form>
 
 </x-layout>
