@@ -2,12 +2,13 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\User;
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
-use App\Models\Event;
 
-class RequireAgreOver18
+class CheckAdminRole
 {
     /**
      * Handle an incoming request.
@@ -16,12 +17,15 @@ class RequireAgreOver18
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $event = $request->route('event');
-        if($event->rating_fk == 4 && !$request->session()->has('age-verified'))
-        {
-            return to_route('events.age-verification.show', ['id'=>$event->event_id]);
+        if (!Auth::check()) {
+            return redirect()->route('auth.login');
         }
-        echo "Verificacion de la edad <br>";
+
+        if (Auth::user()->role !== User::ROLE_ADMIN) {
+            return redirect()->route('events.index')
+                ->with('feedback.message', 'No tienes permisos para acceder a esta sección.');
+        }
+
         return $next($request);
     }
 }

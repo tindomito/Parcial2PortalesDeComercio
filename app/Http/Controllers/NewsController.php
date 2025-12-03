@@ -2,44 +2,77 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\News;
+use Illuminate\Http\Request;
+
 class NewsController extends Controller
 {
     public function index()
     {
-        // Array de novedades/noticias de ejemplo
-        $news = [
-            [
-                'id' => 1,
-                'title' => 'Nuevo Sistema de Películas Disponible',
-                'date' => '2024-11-15',
-                'summary' => 'Hemos lanzado un nuevo sistema para explorar y descubrir películas. Ahora puedes ver detalles completos, calificaciones y géneros.',
-                'content' => 'Estamos emocionados de anunciar el lanzamiento de nuestro nuevo sistema de películas. Con esta actualización, los usuarios pueden navegar por un catálogo completo, ver información detallada de cada película incluyendo sinopsis, clasificación por edades, géneros y precios. El sistema también incluye búsqueda avanzada y filtros por género.',
-            ],
-            [
-                'id' => 2,
-                'title' => 'Registro de Usuarios Mejorado',
-                'date' => '2024-11-10',
-                'summary' => 'Implementamos mejoras en el proceso de registro para una experiencia más fluida y segura.',
-                'content' => 'Hemos mejorado nuestro sistema de registro de usuarios con validaciones más robustas, mensajes de error más claros y un proceso de autenticación más seguro. Los usuarios ahora pueden crear cuentas de manera más rápida y sencilla.',
-            ],
-            [
-                'id' => 3,
-                'title' => 'Panel de Administración Actualizado',
-                'date' => '2024-11-20',
-                'summary' => 'Los administradores ahora tienen acceso a un panel mejorado para gestionar usuarios del sistema.',
-                'content' => 'Presentamos el nuevo panel de administración que permite a los administradores ver todos los usuarios registrados, sus datos de contacto, fechas de registro y estadísticas generales del sistema. Esta herramienta facilita la gestión y monitoreo de la plataforma.',
-            ],
-            [
-                'id' => 4,
-                'title' => 'Control de Edad para Contenido',
-                'date' => '2024-11-05',
-                'summary' => 'Implementamos un sistema de verificación de edad para proteger a los menores de contenido inapropiado.',
-                'content' => 'Como parte de nuestro compromiso con la seguridad, hemos implementado un sistema de verificación de edad que requiere que los usuarios confirmen su edad antes de acceder a películas con clasificaciones restringidas. Esto garantiza un entorno seguro para todos nuestros usuarios.',
-            ],
-        ];
+        $news = News::orderBy('date', 'desc')->get();
 
         return view('news.index', [
             'news' => $news
         ]);
     }
+
+    public function create()
+    {
+        return view('news.create');
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'title' => 'required|min:2',
+            'date' => 'required|date',
+            'summary' => 'required',
+            'content' => 'required',
+        ]);
+
+        News::create($request->all());
+
+        return redirect()->route('news.index')
+            ->with('feedback.message', 'Novedad publicada con éxito.');
+    }
+
+    public function edit($id)
+    {
+        return view('news.edit', [
+            'news' => News::findOrFail($id)
+        ]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $request->validate([
+            'title' => 'required|min:2',
+            'date' => 'required|date',
+            'summary' => 'required',
+            'content' => 'required',
+        ]);
+
+        $news = News::findOrFail($id);
+        $news->update($request->all());
+
+        return redirect()->route('news.index')
+            ->with('feedback.message', 'Novedad actualizada con éxito.');
+    }
+
+    public function delete($id)
+    {
+        return view('news.delete', [
+            'news' => News::findOrFail($id)
+        ]);
+    }
+
+    public function destroy($id)
+    {
+        $news = News::findOrFail($id);
+        $news->delete();
+
+        return redirect()->route('news.index')
+            ->with('feedback.message', 'Novedad eliminada con éxito.');
+    }
 }
+

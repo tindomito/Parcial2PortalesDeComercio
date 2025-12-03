@@ -11,9 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('movies', function (Blueprint $table) {
-            $table->unsignedTinyInteger('rating_fk');
-            $table->foreign('rating_fk')->references('rating_id')->on('ratings');
+        Schema::create('categories', function (Blueprint $table) {
+            $table->smallIncrements('category_id');
+            $table->string('name', 25);
+            $table->timestamps();
         });
     }
 
@@ -22,8 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('movies', function (Blueprint $table) {
-            $table->dropColumn('rating_fk');
-        });
+        Schema::dropIfExists('categories');
     }
 };

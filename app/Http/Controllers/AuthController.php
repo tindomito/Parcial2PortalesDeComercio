@@ -23,7 +23,7 @@ class AuthController extends Controller
 
         if(Auth::attempt($credentials)){
             return redirect()
-                ->intended(route('movies.index'))
+                ->intended(route('events.index'))
                 ->with('feedback.message', 'Sesión Iniciada con éxito. ¡Bienvenido de nuevo!');
         }
 
@@ -64,7 +64,7 @@ class AuthController extends Controller
         Auth::login($user);
 
         return redirect()
-            ->route('movies.index')
+            ->route('events.index')
             ->with('feedback.message', '¡Cuenta creada con éxito! Bienvenido ' . $user->name . '.');
     }
 

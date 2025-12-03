@@ -1,12 +1,14 @@
 <?php
-    /** \Illuminate\Support\ViewErrorBag $errors */
-    /** \Illuminate\Support\Collection<int, \App\Models\Genre> $genres */
+    /** @var \illuminate\Support\ViewErrorBag $errors */
+    /** @var \App\Models\Event $event */
+    /** \Illuminate\Support\Collection<int, \App\Models\Category> $categories */
+    $categoryIds = $event->categories->pluck('category_id')->all();
 ?>
 <x-layout>
 
-    <x-slot:title>Publicar una Pelicula</x-slot:title>
+    <x-slot:title>Editar el Evento {{ $event->name }}</x-slot:title>
 
-    <h1 class="mb-3" >Publicar una Pelicula</h1>
+    <h1 class="mb-3" >Editar {{ $event->name }}</h1>
     @if ($errors->any())
         <div class="alert alert-danger">
             La informacion ingresada contiene errores.
@@ -14,19 +16,22 @@
         </div>
     @endif
 
-    <form action="{{ route('movies.store') }}" method="POST" enctype="multipart/form-data" >
+
+
+    <form action="{{ route('events.update', ['id' => $event->event_id]) }}" method="POST" enctype="multipart/form-data">
         @csrf
+        @method('PUT')
         <div class="mb-3">
-            <label for="title" class="form-label">Título</label>
+            <label for="name" class="form-label">Nombre</label>
             <input
                 type="text"
-                id="title"
-                name="title"
-                class="form-control @error('title') is-invalid @enderror"
-                @error('title') aria-invalid="true" aria-errormessage="error-title" @enderror
-                value="{{ old('title') }}"
+                id="name"
+                name="name"
+                class="form-control @error('name') is-invalid @enderror"
+                @error('name') aria-invalid="true" aria-errormessage="error-name" @enderror
+                value="{{ old('name', $event->name) }}"
             >
-            @error('title')
+            @error('name')
                 <div class="text-danger">
                     {{ $message }}
                 </div>
@@ -34,16 +39,16 @@
         </div>
 
         <div class="mb-3">
-            <label for="price" class="form-label">Precio</label>
+            <label for="ticket_price" class="form-label">Precio Entrada</label>
             <input
                 type="text"
-                id="price"
-                name="price"
-                class="form-control @error('price') is-invalid @enderror"
-                @error('price') aria-invalid="true" aria-errormessage="error-price" @enderror
-                value="{{ old('price') }}"
+                id="ticket_price"
+                name="ticket_price"
+                class="form-control @error('ticket_price') is-invalid @enderror"
+                @error('ticket_price') aria-invalid="true" aria-errormessage="error-ticket_price" @enderror
+                value="{{ old('ticket_price', $event->ticket_price) }}"
             >
-            @error('price')
+            @error('ticket_price')
                 <div class="text-danger">
                     {{ $message }}
                 </div>
@@ -51,25 +56,20 @@
         </div>
 
         <div class="mb-3">
-            <label for="release_date" class="form-label">Fecha de Estreno</label>
+            <label for="date" class="form-label">Fecha</label>
             <input
                 type="date"
-                id="release_date"
-                name="release_date"
-                class="form-control @error('release_date') is-invalid @enderror"
-                @error('release_date') aria-invalid="true" aria-errormessage="error-release_date" @enderror
-                value="{{ old('release_date') }}"
+                id="date"
+                name="date"
+                class="form-control @error('date') is-invalid @enderror"
+                @error('date') aria-invalid="true" aria-errormessage="error-date" @enderror
+                value="{{ old('date', $event->date) }}"
             >
-            @error('release_date')
+            @error('date')
                 <div class="text-danger">
                     {{ $message }}
                 </div>
             @enderror
-        </div>
-
-        <div class="mb-3">
-            <label for="synopsis" class="form-label">Sinopsis</label>
-            <textarea name="synopsis" id="synopsis" class="form-control">{{ old('synopsis') }}</textarea>
         </div>
 
         <div class="mb-3">
@@ -89,11 +89,24 @@
                     </option>
                 @endforeach
             </select>
-            @error('rating_fk')
-                <div class="text-danger">
-                    {{ $message }}
-                </div>
-            @enderror
+        </div>
+
+        <div class="mb-3">
+            <label for="description" class="form-label">Descripción</label>
+            <textarea name="description" id="description" class="form-control">{{ old('description', $event->description) }}</textarea>
+        </div>
+
+        <div class="mb-3">
+            @if ($event->cover)
+                <img
+                    src="{{ \Illuminate\Support\Facades\Storage::url($event->cover) }}"
+                    alt="{{ $event->cover_description }}"
+                    class="img-fluid"
+                    style="max-width: 300px"
+                >
+            @else
+                <p>No tiene portada</p>
+            @endif
         </div>
 
         <div class="mb-3">
@@ -106,7 +119,7 @@
                 name="cover"
                 class="form-control @error('cover') is-invalid @enderror"
                 @error('cover') aria-invalid="true" aria-errormessage="error-cover" @enderror
-                value="{{ old('cover') }}"
+                value="{{ old('cover', $event->cover) }}"
             >
             @error('cover')
                 <div class="text-danger">
@@ -125,7 +138,7 @@
                 name="cover_description"
                 class="form-control @error('cover_description') is-invalid @enderror"
                 @error('cover_description') aria-invalid="true" aria-errormessage="error-cover_description" @enderror
-                value="{{ old('cover_description') }}"
+                value="{{ old('cover_description', $event->cover_description) }}"
             >
             @error('cover_description')
                 <div class="text-danger">
@@ -135,21 +148,21 @@
         </div>
 
         <fieldset class="mb-3">
-            <legend>Géneros</legend>
-            @foreach ($genres as $genre)
+            <legend>Categorias</legend>
+            @foreach ($categories as $category)
             <label class="me-3">
                 <input
                     type="checkbox"
-                    name="genre_id[]"
-                    value="{{ $genre->genre_id }}"
-                    @checked(in_array($genre->genre_id, old('genre_id', [])))
+                    name="category_id[]"
+                    value="{{ $category->category_id }}"
+                    @checked(in_array($category->category_id, old('category_id', $categoryIds)))
                 >
-                {{ $genre->name }}
+                {{ $category->name }}
             </label>
             @endforeach
         </fieldset>
 
-        <button type="submit" class="btn btn-primary">Publicar</button>
+        <button type="submit" class="btn btn-primary">Aplicar Cambios</button>
 
     </form>
 

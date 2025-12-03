@@ -21,6 +21,7 @@ return Application::configure(basePath: dirname(__DIR__))
         });
 
         $middleware->alias([
+            'admin' => \App\Http\Middleware\CheckAdminRole::class,
             'require-age' => \App\Http\Middleware\RequireAgreOver18::class,
         ]);
     })

@@ -1,22 +1,23 @@
 html,
 body,
-#app{
+#app {
     height: 100%;
 }
 
-#app{
+
+
+#app {
     display: grid;
     grid-template-rows: 56px 1fr 100px;
 }
 
-.footer{
+.footer {
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100px;
 
-    p{
+    p {
         margin: 0;
     }
 }
-
