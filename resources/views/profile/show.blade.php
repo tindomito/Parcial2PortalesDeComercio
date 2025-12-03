@@ -3,7 +3,7 @@
     <x-slot:title>Mi Perfil</x-slot:title>
 
     <style>
-        /* Estilos para fondo oscuro y letras claras */
+        /* Estilos para fondo oscuro y letras clara */
         .profile-container {
             background-color: #1a1a1a;
             min-height: 100vh;
