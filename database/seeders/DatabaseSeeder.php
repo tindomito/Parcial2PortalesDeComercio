@@ -27,6 +27,7 @@ class DatabaseSeeder extends Seeder
             CategorySeeder::class,
             EventSeeder::class,
             NewsSeeder::class,
+            UserReservationsSeeder::class,
         ]);
     }
 }
