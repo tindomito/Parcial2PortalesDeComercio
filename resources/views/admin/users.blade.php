@@ -195,6 +195,80 @@
                 </div>
             </div>
         </div>
+
+        <!-- Sección de Cartelera con Más Ventas -->
+        @if($topEvent)
+        <div class="stats-card mt-4">
+            <h5>Cartelera con Más Ventas</h5>
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    @if($topEvent->cover)
+                        <img src="{{ asset('storage/' . $topEvent->cover) }}"
+                             alt="{{ $topEvent->cover_description ?? $topEvent->name }}"
+                             class="img-fluid rounded mb-3"
+                             style="max-height: 250px; object-fit: cover; width: 100%;">
+                    @else
+                        <div class="bg-secondary rounded d-flex align-items-center justify-content-center mb-3"
+                             style="height: 250px;">
+                            <i class="bi bi-image" style="font-size: 4rem; color: rgba(255,255,255,0.3);"></i>
+                        </div>
+                    @endif
+                </div>
+                <div class="col-md-8">
+                    <h3 class="text-white mb-3">{{ $topEvent->name }}</h3>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <p class="text-white mb-2">
+                                <strong>Fecha:</strong>
+                                {{ \Carbon\Carbon::parse($topEvent->date)->format('d/m/Y H:i') }}
+                            </p>
+                            <p class="text-white mb-2">
+                                <strong>Precio por Ticket:</strong>
+                                ${{ number_format($topEvent->ticket_price, 2) }}
+                            </p>
+                            @if($topEvent->rating)
+                            <p class="text-white mb-2">
+                                <strong>Clasificación:</strong>
+                                {{ $topEvent->rating->name }}
+                            </p>
+                            @endif
+                        </div>
+                        <div class="col-md-6">
+                            @if($topEvent->categories->count() > 0)
+                            <p class="text-white mb-2">
+                                <strong>Categorías:</strong><br>
+                                @foreach($topEvent->categories as $category)
+                                    <span class="badge bg-secondary me-1">{{ $category->name }}</span>
+                                @endforeach
+                            </p>
+                            @endif
+                        </div>
+                    </div>
+
+                    <div class="row text-center mt-4">
+                        <div class="col-md-4">
+                            <div class="stat-number" style="font-size: 2rem;">{{ $topEvent->total_tickets_sold ?? 0 }}</div>
+                            <div class="stat-label">Tickets Vendidos</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-number" style="font-size: 2rem;">{{ $topEvent->total_reservations ?? 0 }}</div>
+                            <div class="stat-label">Reservas</div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="stat-number" style="font-size: 2rem;">${{ number_format($topEventRevenue, 2) }}</div>
+                            <div class="stat-label">Ingresos Totales</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @else
+        <div class="stats-card mt-4">
+            <h5>Cartelera con Más Ventas</h5>
+            <p class="text-white-50 mb-0">No hay datos de ventas disponibles aún.</p>
+        </div>
+        @endif
     @endif
 
 </x-layout>
