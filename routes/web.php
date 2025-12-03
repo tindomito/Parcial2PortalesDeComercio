@@ -95,6 +95,19 @@ Route::post('registrarse', [\App\Http\Controllers\AuthController::class, 'store'
 Route::post('cerrar-sesion', [\App\Http\Controllers\AuthController::class, 'logout'])
     ->name('auth.logout');
 
+// Perfil de Usuario
+Route::get('/perfil', [\App\Http\Controllers\ProfileController::class, 'show'])
+    ->name('profile.show')
+    ->middleware('auth');
+
+Route::get('/perfil/editar', [\App\Http\Controllers\ProfileController::class, 'edit'])
+    ->name('profile.edit')
+    ->middleware('auth');
+
+Route::put('/perfil/actualizar', [\App\Http\Controllers\ProfileController::class, 'update'])
+    ->name('profile.update')
+    ->middleware('auth');
+
 // Panel de Administración
 Route::get('admin/usuarios', [\App\Http\Controllers\AdminController::class, 'users'])
     ->name('admin.users')
