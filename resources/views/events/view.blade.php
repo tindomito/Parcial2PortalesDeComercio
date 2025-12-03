@@ -35,4 +35,54 @@
 <h2 class="mb-3" >Descripción</h2>
 <div>{{ $event->description }}</div>
 
+@auth
+<hr class="mb-3">
+
+<h2 class="mb-3">Reservar Entrada</h2>
+<form action="{{ route('reservations.store', ['event' => $event->event_id]) }}" method="post">
+    @csrf
+
+    <div class="mb-3">
+        <label for="quantity" class="form-label">Cantidad de entradas</label>
+        <input
+            type="number"
+            id="quantity"
+            name="quantity"
+            class="form-control"
+            min="1"
+            value="{{ old('quantity', 1) }}"
+            required
+        >
+        @error('quantity')
+            <div class="text-danger">{{ $message }}</div>
+        @enderror
+    </div>
+
+    <div class="mb-3">
+        <p><strong>Total a pagar:</strong> $<span id="total-price">{{ $event->ticket_price }}</span></p>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Confirmar Reserva</button>
+</form>
+
+<script>
+    const ticketPrice = {{ $event->ticket_price }};
+    const quantityInput = document.getElementById('quantity');
+    const totalPriceElement = document.getElementById('total-price');
+
+    quantityInput.addEventListener('input', function() {
+        const quantity = parseInt(this.value) || 1;
+        const total = ticketPrice * quantity;
+        totalPriceElement.textContent = total;
+    });
+</script>
+@endauth
+
+@guest
+<hr class="mb-3">
+<p class="alert alert-info">
+    <a href="{{ route('auth.login') }}">Inicia sesión</a> o <a href="{{ route('auth.register') }}">regístrate</a> para reservar entradas.
+</p>
+@endguest
+
 </x-layout>

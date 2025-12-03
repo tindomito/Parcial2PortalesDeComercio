@@ -189,6 +189,11 @@
                             </x-nav-link>
                         </li>
                         @auth
+                            <li class="nav-item">
+                                <x-nav-link route="reservations.index">
+                                    Mis Reservas
+                                </x-nav-link>
+                            </li>
                             @if(auth()->user()?->role === \App\Models\User::ROLE_ADMIN)
                                 <li class="nav-item">
                                     <x-nav-link route="admin.users">

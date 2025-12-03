@@ -80,6 +80,18 @@ Route::put('cartelera/editar/{id}', [\App\Http\Controllers\EventsController::cla
     ->name('events.update')
     ->middleware(['auth', 'admin']);
 
+Route::post('cartelera/{event}/reservar', [\App\Http\Controllers\ReservationController::class, 'store'])
+    ->name('reservations.store')
+    ->middleware('auth');
+
+Route::get('mis-reservas', [\App\Http\Controllers\ReservationController::class, 'index'])
+    ->name('reservations.index')
+    ->middleware('auth');
+
+Route::post('reservas/{id}/cancelar', [\App\Http\Controllers\ReservationController::class, 'cancel'])
+    ->name('reservations.cancel')
+    ->middleware('auth');
+
 Route::get('iniciar-sesion', [\App\Http\Controllers\AuthController::class, 'login'])
     ->name('auth.login');
 
