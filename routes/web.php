@@ -125,3 +125,8 @@ Route::get('admin/usuarios', [\App\Http\Controllers\AdminController::class, 'use
     ->name('admin.users')
     ->middleware('auth');
 
+Route::get('admin/usuarios/{id}', [\App\Http\Controllers\AdminController::class, 'userDetails'])
+    ->name('admin.user.details')
+    ->middleware('auth')
+    ->whereNumber('id');
+

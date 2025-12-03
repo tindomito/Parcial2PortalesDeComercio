@@ -110,6 +110,23 @@
             background: rgba(255, 255, 255, 0.1);
             color: rgba(255, 255, 255, 0.8);
         }
+
+        .user-link {
+            color: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block;
+        }
+
+        .user-link:hover {
+            color: #ff0000;
+            text-decoration: underline;
+            transform: translateX(5px);
+        }
+
+        .clickable-cell {
+            cursor: pointer;
+        }
     </style>
 
     <div class="admin-header">
@@ -138,8 +155,16 @@
                     @foreach($users as $user)
                         <tr>
                             <td>{{ $user->id }}</td>
-                            <td><strong>{{ $user->name }}</strong></td>
-                            <td>{{ $user->email }}</td>
+                            <td class="clickable-cell">
+                                <a href="{{ route('admin.user.details', $user->id) }}" class="user-link">
+                                    <strong>{{ $user->name }}</strong>
+                                </a>
+                            </td>
+                            <td class="clickable-cell">
+                                <a href="{{ route('admin.user.details', $user->id) }}" class="user-link">
+                                    {{ $user->email }}
+                                </a>
+                            </td>
                             <td>
                                 <span class="badge-role {{ $user->role === 'admin' ? 'badge-admin' : 'badge-user' }}">
                                     {{ ucfirst($user->role) }}
