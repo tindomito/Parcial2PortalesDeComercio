@@ -202,6 +202,11 @@
                                 </li>
                             @endif
                             <li class="nav-item">
+                                <x-nav-link route="profile.show">
+                                    Mi Perfil
+                                </x-nav-link>
+                            </li>
+                            <li class="nav-item">
                                 <form action="{{ url('/cerrar-sesion') }}" method="POST" class="d-inline">
                                     @csrf
                                     <button type="submit" class="btn btn-logout">
