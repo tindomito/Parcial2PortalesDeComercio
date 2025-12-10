@@ -39,9 +39,7 @@
 <hr class="mb-3">
 
 <h2 class="mb-3">Reservar Entrada</h2>
-<form action="{{ route('reservations.store', ['event' => $event->event_id]) }}" method="post">
-    @csrf
-
+<form action="{{ route('checkout.show', ['event' => $event->event_id]) }}" method="get">
     <div class="mb-3">
         <label for="quantity" class="form-label">Cantidad de entradas</label>
         <input

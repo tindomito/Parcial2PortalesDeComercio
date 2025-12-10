@@ -80,8 +80,13 @@ Route::put('cartelera/editar/{id}', [\App\Http\Controllers\EventsController::cla
     ->name('events.update')
     ->middleware(['auth', 'admin']);
 
-Route::post('cartelera/{event}/reservar', [\App\Http\Controllers\ReservationController::class, 'store'])
-    ->name('reservations.store')
+// Checkout
+Route::get('cartelera/{event}/checkout', [\App\Http\Controllers\CheckoutController::class, 'show'])
+    ->name('checkout.show')
+    ->middleware('auth');
+
+Route::post('cartelera/{event}/checkout', [\App\Http\Controllers\CheckoutController::class, 'process'])
+    ->name('checkout.process')
     ->middleware('auth');
 
 Route::get('mis-reservas', [\App\Http\Controllers\ReservationController::class, 'index'])
